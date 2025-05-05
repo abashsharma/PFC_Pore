@@ -10,5 +10,5 @@ The code can simply be compiled with nvcc, and is written for CUDA92 (for higher
 Compile as:
 nvcc -lcufft Cuda_pore.cu -O3 -o PFC
 
-A sample sbatch job submission to run on the HPC (needs GPU) is included as:
+A sample sbatch job submission to run on the HPC (needs GPU) is included as 'slurmSubmitGPU.sh'
 
