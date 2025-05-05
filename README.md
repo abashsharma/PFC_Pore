@@ -14,6 +14,7 @@ _nvcc -lcufft Cuda_pore.cu -O3 -o PFC_
 A sample sbatch job submission to run on the HPC (needs GPU) is included as 'slurmSubmitGPU.sh'
 
 Please reach out to me if you need the value of the parameters for the model (i.e for this function in Cuda_pore.cu):
+
 load_parameters(N, psi0, r, dn, dt, chi, phi0, tnuc, Rmax, nuc, seeds, num_seeds, r0, r1,xi,yi);
 
 
