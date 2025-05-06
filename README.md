@@ -16,5 +16,6 @@ A sample sbatch job submission to run on the HPC (needs GPU) is included as 'slu
 The simulation outputs the xyz coordinates in a file. It also outputs the energy of the system, the total number of atomic crystals and other system parameters.
 
 # Visualization 
-heatMap_scales.py is a python script that lets visualize the heat map of output coardinates.
-
+heatMap_scales.py is a python script that lets visualize the heat map of output coardinates. \
+The output visuals can be found in the following publication: \
+https://www.researchgate.net/publication/356470592_A_phase_field_crystal_model_for_materials_crystallization_in_the_presence_of_nanoscale_pores
