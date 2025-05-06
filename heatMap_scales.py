@@ -7,7 +7,7 @@ import math
 # Create data
 #x = np.random.randn(4096)
 #y = np.random.randn(4096)
-dim=1024
+dim=1024   #dimension on x and y direction
 x=[]
 y=[]
 for i in range(0,dim):
