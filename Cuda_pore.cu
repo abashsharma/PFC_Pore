@@ -13,6 +13,7 @@
 
 using namespace std;
 
+//Check for errors with GPU
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
 inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=true)
 {
@@ -23,10 +24,10 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=t
     }
 }
 
-
+//Main PFC equation with a pore in GPU
 __global__ void Pore(double *g, int N, int real_size, double r0, double r1, double xi, double yi){
 
-    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    int i = blockIdx.x * blockDim.x + threadIdx.x; 
     int x,y;
     double rad;
     double f;
@@ -55,6 +56,7 @@ __global__ void Pore(double *g, int N, int real_size, double r0, double r1, doub
     __syncthreads();
 }
 
+//Function to solve just PFC part in GPU
 __global__ void PFC(double *data,double *data2, double *data3,double *data4, double *gpsi, double *g, int N, int real_size, double r, double chi, double phi0){
 
     int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -79,7 +81,7 @@ __global__ void PFC(double *data,double *data2, double *data3,double *data4, dou
     __syncthreads();
 }
 
-
+//Function to calculate the free energy 
 __global__ void Free_en(double *data,double *data2,double *data4, int real_size, int N, double *g, double chi, double phi0, double psi0, double r){
 
     int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -101,7 +103,7 @@ __global__ void Free_en(double *data,double *data2,double *data4, int real_size,
     __syncthreads();
 }
 
-
+//Function to perform in between calculations 
 __global__ void Add(double *data2, double *data3,double *data4, int N, int real_size){
 
 
@@ -122,7 +124,7 @@ __global__ void Add(double *data2, double *data3,double *data4, int N, int real_
     __syncthreads();
 }
 
-
+//FUnction to integrate all the data points
 __global__ void Integration(double *data,double *data2, int N, int real_size, double dt){
 
 
@@ -143,7 +145,7 @@ __global__ void Integration(double *data,double *data2, int N, int real_size, do
     __syncthreads();
 }
 
-
+//Function to calculate Laplacian
 __global__ void Laplace(double *data, double *data2, int N, int real_size, int n,
                         int *d_1, int *d_2, int *d_3, int *d_4, int *d_5, int *d_6, int *d_7, int *d_8, double dn) {
 
@@ -175,7 +177,7 @@ __global__ void Laplace(double *data, double *data2, int N, int real_size, int n
     __syncthreads();
 }
 
-
+//Creating a linked list for changing the density field to atoms position
 __global__ void Link ( int *d_1, int *d_2, int *d_3, int *d_4, int *d_5, int *d_6, int *d_7, int *d_8, int N, int real_size) {
 
     int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -503,7 +505,7 @@ void cont(double *h_data, int N, int real_size){
 }
 
 
-
+//Main time evolution of the system
 void grow(double *phi, double *h_data, double *FE_data, double *d_data,double *d_data2, double *d_data3, double *d_data4,double *g, double *gpsi,
           int &tau, int N, int n, int real_size, int mem_size,
           double identity, double psi0, double r, double dt, double chi, double phi0, double r0,double r1, double dn,
@@ -630,7 +632,7 @@ double uniran(){    //random in range [0,1]
     return u;
 }
 
-
+//count the number of atomic crystals
 void particle_count(int *nbr, double *phi, int N, int tau, double psi0, double r, double dn, double dt,
                     int real_size, int *size, int *list, int *head, int *clst, double *xcom, double *ycom, double identity, double A, double nuc, int &atomconst, double name){
 
